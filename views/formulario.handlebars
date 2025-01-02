@@ -1,0 +1,30 @@
+{{!-- Formulario de registro --}}
+
+<main>
+    <div class="container">
+        <div class="row">
+            {{!--trabalha com colunas--}}
+            <div class="col-6 offset-3">
+                {{!-- col-6 6 colunas offset-3 3 colunas de margem--}}
+                <form action="/cadastrar" method="POST" enctype="multipart/form-data">
+                    {{!--enctype="multipart/form-data" permite o envio de arquivos--}}
+                    <input type="text" name="nome" class="form-control" placeholder="Nome Do produto">
+                     {{!--"form-control" arredonda os cantos--}}
+                    <input type="number" name="valor" class="form-control" placeholder="Preço">
+                    <input type="file" name="image" class="form-control">
+                    <input type="submit" class="btn btn-primary" value="Enviar">
+                    {{!--btn btn-primary melhora o butao--}}
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{!--
+    <div class="container" style="background-color: #09529a;">
+        <div class="row">
+            <div class="col-3">Coluna 1</div>
+            <div class="col-3">Coluna 2</div>
+            <div class="col-3">Coluna 3</div>
+            <div class="col-3">Coluna 4</div>
+            --}}
+</main>
