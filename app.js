@@ -10,6 +10,10 @@ const { engine } = require('express-handlebars');
 // Importar módulo mysql
 
 const mysql = require('mysql2');
+//File System
+const fs = require('fs');
+
+
 // App
 const app = express();
 
@@ -94,9 +98,16 @@ res.redirect('/');
 }); 
 // Rota de exclusão
 app.get('/remover/:codigo&:imgem', function(req, res){
-    console.log(req.params.codigo); 
-    console.log(req.params.imagem);
-    res.end();
+    let sql = `DELETE FROM produtos WHERE codigo = ${req.params.codigo}`;
+    conexao.query(sql, function(erro, retorno){
+        if(erro) throw erro;
+        fs.unlink(__dirname+'/imagens/'+req.params.imgem, (erro_imagem)=>{  
+            
+            console.log('falha ao excluir imagem');
+        });
+        res.redirect('/');
+    });
+    
 });
     //SQL
 // Servidor
