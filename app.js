@@ -13,7 +13,6 @@ const mysql = require('mysql2');
 //File System
 const fs = require('fs');
 
-
 // App
 const app = express();
 
@@ -33,7 +32,6 @@ app.use('/css', express.static('./css'));
 app.use('/imagens', express.static('./imagens'));
 
 // Configuração do Handlebars
-
 
 
 app.engine('handlebars', engine());
@@ -96,22 +94,6 @@ conexao.query(sql, function(erro, resultado){
 res.redirect('/');
 
 }); 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
