@@ -92,6 +92,12 @@ conexao.query(sql, function(erro, resultado){
 res.redirect('/');
 
 }); 
-
+// Rota de exclusão
+app.get('/remover/:codigo&:imgem', function(req, res){
+    console.log(req.params.codigo); 
+    console.log(req.params.imagem);
+    res.end();
+});
+    //SQL
 // Servidor
 app.listen(8080);

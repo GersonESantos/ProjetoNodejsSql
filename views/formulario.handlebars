@@ -23,13 +23,41 @@
     <div>
         <div class="container">
             <div class="row">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4">
+                {{#each produtos}}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="card" >
+                        <img src="../imagens/{{imagem}}" class="card-img-top" alt="...">
+                        <div class="textos">
+                            <p>{{nome}}</p>
+                            <p>{{valor}}</p>
+                        </div>
+                        <a href="#" class="btn btn-warning ">Alterar</a>
+                        <a href="/remover/{{codigo}}&{{imagem}}" class="btn btn-primary ">Remover</a>
+
+                    </div>
+                </div>
+
+
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</main>
+
+{{!--   
+<div class="col-12 col-sm-6 col-md-4 col-lg-4">
                     <div class="card" >
                         <img src="../imagens/01.jpeg" class="card-img-top" alt="...">
-                        <p>Camisa</p>
-                        <p>R$ 50,00</p>
+                        <div class="textos">
+                            <p>Camisa</p>
+                            <p>R$ 50,00</p>
+                        </div>
                         <a href="#" class="btn btn-warning ">Alterar</a>
                         <a href="#" class="btn btn-primary ">Remover</a>
 
-    </div>
-</main>
+                    </div>
+                </div>
+
+
+--}}
+
