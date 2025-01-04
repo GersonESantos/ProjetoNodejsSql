@@ -1,6 +1,5 @@
 // Importar módulo express
 const express = require('express');
-
 // Importar módulo fileupload
 const fileUpload = require('express-fileupload');
 
@@ -8,8 +7,9 @@ const fileUpload = require('express-fileupload');
 const { engine } = require('express-handlebars');
 
 // Importar módulo mysql
-
 const mysql = require('mysql2');
+//File System
+const fs = require('fs');
 // App
 const app = express();
 
@@ -29,8 +29,6 @@ app.use('/css', express.static('./css'));
 app.use('/imagens', express.static('./imagens'));
 
 // Configuração do Handlebars
-
-
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');   
@@ -57,7 +55,6 @@ conexao.connect(function(erro){
 
 // Rota principal
 app.get('/', function(req, res){
-   // res.render('formulario');
    //SQL
    let sql = 'SELECT * FROM produtos';
 conexao.query(sql, function(erro, retorno){
@@ -85,7 +82,7 @@ conexao.query(sql, function(erro, resultado){
     if(erro) throw erro;
     req.files.imagem.mv(__dirname+'/imagens/'+ req.files.imagem.name);
 
-    console.log('Cadastrado com sucesso!'+resultado);
+    console.log(resultado);
     
 })
 //retornar para a rota principal
@@ -93,5 +90,37 @@ res.redirect('/');
 
 }); 
 
-// Servidor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Rota de exclusão
+app.get('/remover/:codigo&:imagem', function(req, res){
+    let sql = `DELETE FROM produtos WHERE codigo = ${req.params.codigo}`;
+    conexao.query(sql, function(erro, retorno){
+        if(erro) throw erro;
+                             
+        fs.unlink(__dirname+'/imagens/'+req.params.imagem, (erro_imagem)=>{
+            console.log('falha ao excluir imagem');
+        });
+    });
+    
+    res.redirect('/');
+})
+    
+
 app.listen(8080);
