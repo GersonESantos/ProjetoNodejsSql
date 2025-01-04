@@ -25,7 +25,12 @@ app.use('/Bootstrap', express.static('./node_modules/bootstrap/dist'));
 
 app.use('/css', express.static('./css'));
 
+//referenciar imagens
+app.use('/imagens', express.static('./imagens'));
+
 // Configuração do Handlebars
+
+
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');   
