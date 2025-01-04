@@ -117,17 +117,30 @@ res.redirect('/');
 
 // Rota de exclusão
 app.get('/remover/:codigo&:imgem', function(req, res){
-    let sql = `DELETE FROM produtos WHERE codigo = ${req.params.codigo}`;
-    conexao.query(sql, function(erro, retorno){
-        if(erro) throw erro;
-        fs.unlink(__dirname+'/imagens/'+req.params.imgem, (erro_imagem)=>{  
-        
-            console.log('falha ao excluir imagem');
-        });
-        res.redirect('/');
-    });
-    
-});
+   
+       // Tratamento de exeção
+       try{
+           // SQL
+           let sql = `DELETE FROM produtos WHERE codigo = ${req.params.codigo}`;
+   
+           // Executar o comando SQL
+           conexao.query(sql, function(erro, retorno){
+               // Caso falhe o comando SQL
+               if(erro) throw erro;
+   
+               // Caso o comando SQL funcione
+               fs.unlink(__dirname+'/imagens/'+req.params.imagem, (erro_imagem)=>{
+                   console.log('Falha ao remover a imagem');
+               });
+           });
+   
+           // Redirecionamento
+           res.redirect('/okRemover');
+       }catch(erro){
+           res.redirect('/falhaRemover');
+       }
+   
+   });
     //SQL
 // Servidor
 app.listen(8080);
