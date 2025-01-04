@@ -121,12 +121,12 @@ app.get('/remover/:codigo&:imagem', function(req, res){
     conexao.query(sql, function(erro, retorno){
         if(erro) throw erro;
         
-                  fs.unlink(__dirname+'/imagens/'+req.params.imagem, (erro_imagem)=>{  
+         fs.unlink(__dirname+'/imagens/'+req.params.imagem, (erro_imagem)=>{  
         
             console.log('falha ao excluir imagem');
         });
-        res.redirect('/');
     });
+    res.redirect('/');
     
 });
     //SQL
