@@ -66,10 +66,7 @@ conexao.query(sql, function(erro, retorno){
     if(erro) throw erro;
     res.render('formulario', {produtos: retorno});  
 })
-
-
 });
-
 // Rota de cadastro
 
 app.post('/cadastrar', function(req, res){
@@ -94,9 +91,6 @@ conexao.query(sql, function(erro, resultado){
 res.redirect('/');
 
 }); 
-
-
-
 // Rota de exclusão
 app.get('/remover/:codigo&:imagem', function(req, res){
     let sql = `DELETE FROM produtos WHERE codigo = ${req.params.codigo}`;
@@ -111,6 +105,14 @@ app.get('/remover/:codigo&:imagem', function(req, res){
     res.redirect('/');
     
 });
-    //SQL
+// Rota para redirecionar para  alteração/edição
+app.get('/formularioEditar/:codigo', function(req, res){
+   //SQL
+    let sql = `SELECT * FROM produtos WHERE codigo = ${req.params.codigo}`;
+   conexao.query(sql, function(erro, retorno){
+       if(erro) throw erro;
+       res.render('formularioEditar', {produto: retorno[0]});
+   }); 
+});
 // Servidor
 app.listen(8080);

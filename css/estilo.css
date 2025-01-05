@@ -1,26 +1,27 @@
 form {
-    margin-top: 50px;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: #f9f9f9;
+    margin-top: 30px;
     text-align: center;
+   
 }
 form input {
     margin-top: 10px;
 }
+form input[type="submit"]{
+    margin-top: 10px;
+    }
+form img{
+    width: 200px;
+    margin-bottom: 40px;
+}
 .card{
     margin-top: 40px;
     padding: 5px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: #f9f9f9;
-    text-align: center;
+    
 }
-.texto{
-    margin-top: 10px;
+.textos{
     display: flex   ;
-    justify-content: space-between;
+    justify-content: space-around;
+    margin-top: 30px;
     font-weight: bold;
 }
 .card a{
