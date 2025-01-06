@@ -1,0 +1,49 @@
+{{!-- Formulario de registro --}}
+
+<main>
+    <div class="container">
+        <div class="row">
+            {{!--trabalha com colunas--}}
+            <div class="col-6 offset-3">
+                {{!-- col-6 6 colunas offset-3 3 colunas de margem--}}
+                <form action="/cadastrar" method="POST" enctype="multipart/form-data">
+                    {{!--enctype="multipart/form-data" permite o envio de arquivos--}}
+                    <input type="text" name="nome" class="form-control" placeholder="Nome Do produto">
+                     {{!--"form-control" arredonda os cantos--}}
+                    <input type="number" name="valor" class="form-control" placeholder="Preço">
+                    <input type="file" name="imagem" class="form-control">
+                    <input type="submit" class="btn btn-primary" value="Enviar">
+                    {{!--btn btn-primary melhora o butao--}}
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{!-- Listagem de produtos  --}}
+    <div>
+        <div class="container">
+            <div class="row">
+                {{#each produtos}}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="card" >
+                        <img src="../imagens/{{imagem}}" class="card-img-top" alt="...">
+                        <div class="textos">
+                            <p>{{nome}}</p>
+                            <p>{{valor}}</p>
+                        </div>
+                        <a href="/formularioEditar/{{codigo}}" class="btn btn-warning ">Alterar</a>
+                        <a href="/remover/{{codigo}}&{{imagem}}" class="btn btn-primary ">Remover</a>
+
+                    </div>
+                </div>
+
+
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</main>
+
+{{!--   
+--}}
+

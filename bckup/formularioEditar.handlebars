@@ -1,0 +1,27 @@
+{{!-- Formulario de registro --}}
+
+<main>
+    <div class="container">
+        <div class="row">
+            {{!--trabalha com colunas--}}
+            <div class="col-6 offset-3">
+                {{!-- col-6 6 colunas offset-3 3 colunas de margem--}}
+                <form action="/editar" method="POST" enctype="multipart/form-data">
+                    <img src="../imagens/{{produto.imagem}}" >
+                    {{!--enctype="multipart/form-data" permite o envio de arquivos--}}
+                    <input type="hidden" name="nomeImagem" value="{{produto.imagem}}">
+                    <input type="number" name="codigo" value="{{produto.codigo}}" >
+                    <input type="text" name="nome" value="{{produto.nome}}"class="form-control" placeholder="Nome Do produto">
+                     {{!--"form-control" arredonda os cantos--}}
+                    <input type="number" name="valor" value="{{produto.valor}}" class="form-control" placeholder="Preço">
+                    <input type="file" name="imagem" class="form-control">
+                    <input type="submit" class="btn btn-primary" value="Alterar">
+                    <a href="/" class="btn btn-secondary" >Cancelar</a>
+                    {{!--btn btn-primary melhora o butao--}}
+                </form>
+            </div>
+        </div>
+    </div>
+
+   
+</main>
