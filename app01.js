@@ -76,7 +76,7 @@ let valor = req.body.valor;
 let imagem = req.files.imagem.name;
 //req.files.imagem.mv(__dirname+'/imagens/'+ req.files.imagem.name);
 //   SQL
-	
+    
 let sql = `INSERT INTO produtos (nome, valor, imagem) VALUES ('${nome}', ${valor}, '${imagem}')`;
 
 
@@ -114,28 +114,5 @@ app.get('/formularioEditar/:codigo', function(req, res){
        res.render('formularioEditar', {produto: retorno[0]});
    }); 
 });
-// Rota de edição
-app.post('/editar', function(req, res){
-         //obter dados para a edição
-         let codigo = req.body.codigo;
-            let nome = req.body.nome;
-            let valor = req.body.valor;
-            let nomeimagem = req.files.imagem.name;
-            let imagem = req.files.imagem.name;
-            console.log('nome');
-            console.log('valor');
-            console.log('codigo');
-            console.log('nomeimagem');
-            console.log('imagem');
-            //finalizar a edição
-            req.end();
-});
-            
-            
-            //SQL
-
-
-
 // Servidor
-    
 app.listen(8080);
