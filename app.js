@@ -115,20 +115,31 @@ app.get('/formularioEditar/:codigo', function(req, res){
    }); 
 });
 // Rota de edição
+// Rota para editar produtos
 app.post('/editar', function(req, res){
-         //obter dados para a edição
-         let nome = req.body.nome;
-         let valor = req.body.valor;
-         let codigo = req.body.codigo;
-            let nomeImagem = req.body.nomeImagem;
-            let imagem = req.files.imagem.name;
-            console.log(nome);
-            console.log(valor);
-            console.log(codigo);
-            console.log(nomeImagem);
-            console.log(imagem);
-            //finalizar a edição
-            res.end();
+
+    // Obter os dados do formulário
+    let nome = req.body.nome;
+    let valor = req.body.valor;
+    let codigo = req.body.codigo;
+    let nomeImagem = req.body.nomeImagem;
+
+    // Definir o tipo de edição
+    try{
+        // Objeto de imagem
+        let imagem = req.files.imagem;
+
+        // SQL
+        let sql = `UPDATE produtos SET nome='${nome}', valor=${valor}, imagem='${imagem.name}' WHERE codigo=${codigo}`;
+    }catch(erro){
+        
+        // SQL
+        let sql = `UPDATE produtos SET nome='${nome}', valor=${valor} WHERE codigo=${codigo}`;
+    }
+
+    // Finalizar rota
+    res.end();
+    
 });
             
             
