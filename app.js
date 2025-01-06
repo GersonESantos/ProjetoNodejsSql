@@ -117,18 +117,18 @@ app.get('/formularioEditar/:codigo', function(req, res){
 // Rota de edição
 app.post('/editar', function(req, res){
          //obter dados para a edição
+         let nome = req.body.nome;
+         let valor = req.body.valor;
          let codigo = req.body.codigo;
-            let nome = req.body.nome;
-            let valor = req.body.valor;
-            let nomeimagem = req.files.imagem.name;
+            let nomeImagem = req.body.nomeImagem;
             let imagem = req.files.imagem.name;
-            console.log('nome');
-            console.log('valor');
-            console.log('codigo');
-            console.log('nomeimagem');
-            console.log('imagem');
+            console.log(nome);
+            console.log(valor);
+            console.log(codigo);
+            console.log(nomeImagem);
+            console.log(imagem);
             //finalizar a edição
-            req.end();
+            res.end();
 });
             
             

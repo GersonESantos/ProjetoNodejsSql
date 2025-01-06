@@ -6,7 +6,7 @@
             {{!--trabalha com colunas--}}
             <div class="col-6 offset-3">
                 {{!-- col-6 6 colunas offset-3 3 colunas de margem--}}
-                <form action="/edita" method="POST" enctype="multipart/form-data">
+                <form action="/editar" method="POST" enctype="multipart/form-data">
                     <img src="../imagens/{{produto.imagem}}" >
                     {{!--enctype="multipart/form-data" permite o envio de arquivos--}}
                     <input type="hidden" name="nomeImagem" value="{{produto.imagem}}">
