@@ -114,8 +114,9 @@ app.get('/formularioEditar/:codigo', function(req, res){
        res.render('formularioEditar', {produto: retorno[0]});
    }); 
 });
-// Rota de edição
-// Rota para editar produtos
+
+        
+      // Rota para editar produtos
 app.post('/editar', function(req, res){
 
     // Obter os dados do formulário
@@ -131,16 +132,38 @@ app.post('/editar', function(req, res){
 
         // SQL
         let sql = `UPDATE produtos SET nome='${nome}', valor=${valor}, imagem='${imagem.name}' WHERE codigo=${codigo}`;
+
+        // Executar comando SQL
+        conexao.query(sql, function(erro, retorno){
+            // Caso falhe o comando SQL
+            if(erro) throw erro;
+
+            // Remover imagem antiga
+            fs.unlink(__dirname+'/imagens/'+nomeImagem, (erro_imagem)=>{
+                console.log('Falha ao remover a imagem.');
+            });
+
+            // Cadastrar nova imagem
+            imagem.mv(__dirname+'/imagens/'+imagem.name);
+        });
     }catch(erro){
         
         // SQL
         let sql = `UPDATE produtos SET nome='${nome}', valor=${valor} WHERE codigo=${codigo}`;
+    
+        // Executar comando SQL
+        conexao.query(sql, function(erro, retorno){
+            // Caso falhe o comando SQL
+            if(erro) throw erro;
+        });
     }
 
     // Finalizar rota
     res.end();
     
 });
+    
+    
             
             
             //SQL
