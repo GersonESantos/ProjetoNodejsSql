@@ -19,13 +19,11 @@ const app = express();
 // Adicionar fileupload
 app.use(fileUpload());
 
-
 //adicionar Bootstrap
 
 app.use('/Bootstrap', express.static('./node_modules/bootstrap/dist'));
 
 //adicionar css
-
 app.use('/css', express.static('./css'));
 
 //referenciar imagens
@@ -33,13 +31,11 @@ app.use('/imagens', express.static('./imagens'));
 
 // Configuração do Handlebars
 
-
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');   
 app.set('views', './views');
 
 //Manipulação de dados  
-
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
@@ -50,13 +46,11 @@ const conexao = mysql.createConnection({
     database: 'projeto'
     });
 
-
 conexao.connect(function(erro){
     if(erro) throw erro;
     console.log('Conectou!');
     //createTable(conexao);
 })
-
 // Rota principal
 app.get('/', function(req, res){
    // res.render('formulario');
@@ -67,6 +61,16 @@ conexao.query(sql, function(erro, retorno){
     res.render('formulario', {produtos: retorno});  
 })
 });
+// Rota principal contendo a situação
+app.get('/:situacao', function(req, res){
+    // res.render('formulario');
+    //SQL
+    let sql = 'SELECT * FROM produtos';
+ conexao.query(sql, function(erro, retorno){
+     if(erro) throw erro;
+     res.render('formulario', {produtos: retorno , situacao: req.params.situacao});  
+ })
+ });
 // Rota de cadastro
 
 app.post('/cadastrar', function(req, res){
