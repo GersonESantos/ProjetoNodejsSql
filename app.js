@@ -137,6 +137,7 @@ app.get('/remover/:codigo&:imagem', function(req, res){
     }catch(erro){
         res.redirect('/falhaRemover');
     }
+});
 // Rota para redirecionar para  alteração/edição
 app.get('/formularioEditar/:codigo', function(req, res){
    //SQL
@@ -200,7 +201,7 @@ app.post('/editar', function(req, res){
     }
 });
     
-    
+
             
   
 
@@ -212,5 +213,5 @@ app.post('/editar', function(req, res){
 
 
 // Servidor
-    
+
 app.listen(8080);
