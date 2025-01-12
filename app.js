@@ -32,7 +32,17 @@ app.use('/imagens', express.static('./imagens'));
 
 // Configuração do Handlebars
 
-app.engine('handlebars', engine());
+// Configuração do express-handlebars
+app.engine('handlebars', engine({
+    helpers: {
+      // Função auxiliar para verificar igualdade
+      condicionalIgualdade: function (parametro1, parametro2, options) {
+        return parametro1 === parametro2 ? options.fn(this) : options.inverse(this);
+      }
+    }
+  }));
+app.set('view engine', 'handlebars');
+app.set('views', './views');
 app.set('view engine', 'handlebars');   
 app.set('views', './views');
 
