@@ -1,8 +1,8 @@
 // Importar módulo express
 const express = require('express');
 
-// Importar módulo fileUpload
-const fileUpload = require('express-fileupload');
+// Importar módulo fileupload
+const fileupload = require('express-fileupload');
 
 // Importar módulo express-handlebars
 const { engine } = require('express-handlebars');
@@ -16,9 +16,8 @@ const fs = require('fs');
 // App
 const app = express();
 
-// Adicionar fileUpload
+// Adicionar fileupload
 app.use(fileupload());
-
 
 //adicionar Bootstrap
 
@@ -32,7 +31,6 @@ app.use('/css', express.static('./css'));
 app.use('/imagens', express.static('./imagens'));
 
 // Configuração do Handlebars
-
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');   
@@ -49,14 +47,11 @@ const conexao = mysql.createConnection({
     password: 'Gabibi89*',
     database: 'projeto'
     });
-
-
 conexao.connect(function(erro){
     if(erro) throw erro;
     console.log('Conectou!');
     //createTable(conexao);
 })
-
 // Rota principal
 app.get('/', function(req, res){
    // res.render('formulario');
@@ -75,7 +70,7 @@ app.get('/:situacao', function(req, res){
  conexao.query(sql, function(erro, retorno){
      if(erro) throw erro;
      res.render('formulario', {produtos: retorno , situacao: req.params.situacao});  
- })
+ });
  });
 // Rota de cadastro
 app.post('/cadastrar', function(req, res){
@@ -84,7 +79,6 @@ app.post('/cadastrar', function(req, res){
       let nome = req.body.nome;
       let valor = req.body.valor;
       let imagem = req.files.imagem.name;
- 
       // Validar o nome do produto e o valor
       if(nome == '' || valor == '' || isNaN(valor)){
          res.redirect('/falhaCadastro');
@@ -111,7 +105,6 @@ app.post('/cadastrar', function(req, res){
  });
 
 //retornar para a rota principal
-
 // Rota de exclusão
 // Rota para remover produtos
 app.get('/remover/:codigo&:imagem', function(req, res){
