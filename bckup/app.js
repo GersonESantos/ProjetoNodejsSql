@@ -2,7 +2,7 @@
 const express = require('express');
 
 // Importar módulo fileupload
-const fileUpload = require('express-fileupload');
+const fileupload = require('express-fileupload');
 
 // Importar módulo express-handlebars
 const { engine } = require('express-handlebars');
@@ -17,8 +17,7 @@ const fs = require('fs');
 const app = express();
 
 // Adicionar fileupload
-app.use(fileUpload());
-
+app.use(fileupload());
 
 //adicionar Bootstrap
 
@@ -32,7 +31,6 @@ app.use('/css', express.static('./css'));
 app.use('/imagens', express.static('./imagens'));
 
 // Configuração do Handlebars
-
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');   
@@ -49,14 +47,11 @@ const conexao = mysql.createConnection({
     password: 'Gabibi89*',
     database: 'projeto'
     });
-
-
 conexao.connect(function(erro){
     if(erro) throw erro;
     console.log('Conectou!');
     //createTable(conexao);
 })
-
 // Rota principal
 app.get('/', function(req, res){
    // res.render('formulario');
@@ -67,43 +62,74 @@ conexao.query(sql, function(erro, retorno){
     res.render('formulario', {produtos: retorno});  
 })
 });
+// Rota principal contendo a situação
+app.get('/:situacao', function(req, res){
+    // res.render('formulario');
+    //SQL
+    let sql = 'SELECT * FROM produtos';
+ conexao.query(sql, function(erro, retorno){
+     if(erro) throw erro;
+     res.render('formulario', {produtos: retorno , situacao: req.params.situacao});  
+ });
+ });
 // Rota de cadastro
-
 app.post('/cadastrar', function(req, res){
-    //obter dados para o cadastro
-let nome = req.body.nome;
-let valor = req.body.valor;
-let imagem = req.files.imagem.name;
-//req.files.imagem.mv(__dirname+'/imagens/'+ req.files.imagem.name);
-//   SQL
-	
-let sql = `INSERT INTO produtos (nome, valor, imagem) VALUES ('${nome}', ${valor}, '${imagem}')`;
+    try{
+      // Obter os dados que serão utiliados para o cadastro
+      let nome = req.body.nome;
+      let valor = req.body.valor;
+      let imagem = req.files.imagem.name;
+      // Validar o nome do produto e o valor
+      if(nome == '' || valor == '' || isNaN(valor)){
+         res.redirect('/falhaCadastro');
+      }else{
+         // SQL
+         let sql = `INSERT INTO produtos (nome, valor, imagem) VALUES ('${nome}', ${valor}, '${imagem}')`;
+         
+         // Executar comando SQL
+         conexao.query(sql, function(erro, retorno){
+             // Caso ocorra algum erro
+             if(erro) throw erro;
+ 
+             // Caso ocorra o cadastro
+             req.files.imagem.mv(__dirname+'/imagens/'+req.files.imagem.name);
+             console.log(retorno);
+         });
+ 
+         // Retornar para a rota principal
+         res.redirect('/okCadastro');
+      }
+    }catch(erro){
+     res.redirect('/falhaCadastro');
+    }
+ });
 
-
-conexao.query(sql, function(erro, resultado){
-    if(erro) throw erro;
-    req.files.imagem.mv(__dirname+'/imagens/'+ req.files.imagem.name);
-
-    console.log('Cadastrado com sucesso!'+resultado);
-    
-})
 //retornar para a rota principal
-res.redirect('/');
-
-}); 
 // Rota de exclusão
+// Rota para remover produtos
 app.get('/remover/:codigo&:imagem', function(req, res){
-    let sql = `DELETE FROM produtos WHERE codigo = ${req.params.codigo}`;
-    conexao.query(sql, function(erro, retorno){
-        if(erro) throw erro;
-        
-         fs.unlink(__dirname+'/imagens/'+req.params.imagem, (erro_imagem)=>{  
-        
-            console.log('falha ao excluir imagem');
-        });
-    });
-    res.redirect('/');
     
+    // Tratamento de exeção
+    try{
+        // SQL
+        let sql = `DELETE FROM produtos WHERE codigo = ${req.params.codigo}`;
+
+        // Executar o comando SQL
+        conexao.query(sql, function(erro, retorno){
+            // Caso falhe o comando SQL
+            if(erro) throw erro;
+
+            // Caso o comando SQL funcione
+            fs.unlink(__dirname+'/imagens/'+req.params.imagem, (erro_imagem)=>{
+                console.log('Falha ao remover a imagem ');
+            });
+        });
+
+        // Redirecionamento
+        res.redirect('/okRemover');
+    }catch(erro){
+        res.redirect('/falhaRemover');
+    }
 });
 // Rota para redirecionar para  alteração/edição
 app.get('/formularioEditar/:codigo', function(req, res){
@@ -114,28 +140,71 @@ app.get('/formularioEditar/:codigo', function(req, res){
        res.render('formularioEditar', {produto: retorno[0]});
    }); 
 });
-// Rota de edição
+
+        
+      // Rota para editar produtos
 app.post('/editar', function(req, res){
-         //obter dados para a edição
-         let nome = req.body.nome;
-         let valor = req.body.valor;
-         let codigo = req.body.codigo;
-            let nomeImagem = req.body.nomeImagem;
-            let imagem = req.files.imagem.name;
-            console.log(nome);
-            console.log(valor);
-            console.log(codigo);
-            console.log(nomeImagem);
-            console.log(imagem);
-            //finalizar a edição
-            res.end();
+
+    // Obter os dados do formulário
+    let nome = req.body.nome;
+    let valor = req.body.valor;
+    let codigo = req.body.codigo;
+    let nomeImagem = req.body.nomeImagem;
+
+    // Validar nome do produto e valor
+    if(nome == '' || valor == '' || isNaN(valor)){
+        res.redirect('/falhaEdicao');
+    }else {
+
+        // Definir o tipo de edição
+        try{
+            // Objeto de imagem
+            let imagem = req.files.imagem;
+
+            // SQL
+            let sql = `UPDATE produtos SET nome='${nome}', valor=${valor}, imagem='${imagem.name}' WHERE codigo=${codigo}`;
+    
+            // Executar comando SQL
+            conexao.query(sql, function(erro, retorno){
+                // Caso falhe o comando SQL
+                if(erro) throw erro;
+
+                // Remover imagem antiga
+                fs.unlink(__dirname+'/imagens/'+nomeImagem, (erro_imagem)=>{
+                    console.log('Falha ao remover a imagem.');
+                });
+
+                // Cadastrar nova imagem
+                imagem.mv(__dirname+'/imagens/'+imagem.name);
+            });
+        }catch(erro){
+            
+            // SQL
+            let sql = `UPDATE produtos SET nome='${nome}', valor=${valor} WHERE codigo=${codigo}`;
+        
+            // Executar comando SQL
+            conexao.query(sql, function(erro, retorno){
+                // Caso falhe o comando SQL
+                if(erro) throw erro;
+            });
+        }
+
+        // Redirecionamento
+        res.redirect('/okEdicao');
+    }
 });
+    
+
             
-            
+  
+
+
+
+
             //SQL
 
 
 
 // Servidor
-    
+
 app.listen(8080);
